@@ -1,0 +1,38 @@
+<script>
+/**
+* Instructions: 
+* 1. Set a "marquee" attribute on a "Collection Wrapper: element
+* 2. Set a "marquee-speed" attribute with a value that represents
+*    speed in seconds (i.e. "15")
+* 3. Publish!
+*
+* You can have as many of them as you want
+*/
+
+// get all marquee elements
+const marquees = document.querySelectorAll('[marquee]')
+
+marquees.forEach((list, index) => {
+	// set default speed to 15 seconds
+  const speed = list.getAttribute('marquee-speed') || 15
+
+  list.setAttribute('marquee', index) // set marquee index
+  const clone = list.cloneNode(true) // clone list
+  clone.setAttribute('marquee', index) // set marquee index
+  clone.removeAttribute('id') // avoid duplicate id
+  list.parentNode.appendChild(clone) // append clone after list
+
+  // create style tag with a css animation for this marquee
+  const style = document.createElement('style')
+  style.innerHTML = `
+      @keyframes marquee${index} {
+        0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+      }
+      [marquee="${index}"] {
+        animation: marquee${index} ${speed}s linear infinite;
+      }
+    `
+  document.head.appendChild(style)
+})
+</script>
